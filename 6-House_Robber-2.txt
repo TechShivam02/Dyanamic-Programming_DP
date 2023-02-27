@@ -1,0 +1,81 @@
+ int solvememo(int index , vector<int> arr , vector<int> &dp){
+        
+        if(index == 0){
+            return arr[index];    
+        }    
+        
+        if(index < 0){
+            return 0;    
+        }
+        
+        if(dp[index] != -1){
+            return dp[index];
+        }
+        
+        
+        
+        int pick = arr[index] + solvememo(index-2 , arr , dp);
+        int notpick = 0 + solvememo(index-1 , arr , dp);
+        
+        
+        
+        dp[index] = max(pick,notpick);
+        
+        return dp[index];
+        
+        
+    }
+    
+    
+    int findmaxAns(vector<int> nums , int n){
+        
+         vector<int> dp(n+1,-1);
+        
+        return solvememo(n-1 , nums , dp);
+        
+        
+    }
+    
+    
+    
+    int rob(vector<int>& nums) {
+        
+        
+        int n = nums.size();
+        
+        if(n==1){
+            return nums[0];
+        }
+        
+        
+        
+        vector<int> includeF;
+        vector<int> includeL;
+        
+        
+        for(int i=0;i<n-1;i++){
+            includeF.push_back(nums[i]);
+        }
+        
+        for(int i=1;i<n;i++){
+            includeL.push_back(nums[i]);
+        }
+        
+        
+        
+        
+        int ansone = findmaxAns(includeF , includeF.size());
+        int anstwo = findmaxAns(includeL , includeL.size());
+        
+        return max(ansone , anstwo);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
