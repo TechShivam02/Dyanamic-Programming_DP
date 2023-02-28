@@ -1,0 +1,121 @@
+
+
+// Memoization     TimeComp : O(m*n)   Space = pathlength + dp space   = O(m-1) + O(n-1)  + O(n*m);
+
+
+
+int func(int i , int j , vector< vector< int> > &arr , vector<vector<int>> &dp){
+
+    
+     if(i>=0 && j>=0 && arr[i][j] == 1){
+        return 0;
+    }
+    
+    
+    if(i==0 && j==0){
+        return 1;
+    }
+
+
+    if(i<0 || j<0){
+        return 0;
+    }
+
+
+
+
+    if(dp[i][j] !=-1){
+        return dp[i][j];
+    }
+
+
+
+    int up = func(i-1, j , arr , dp);
+    int left = func(i,  j-1 , arr , dp);
+
+    return dp[i][j] = up+left;
+
+}
+
+
+
+
+    int uniquePathsWithObstacles(vector<vector<int>>& mat) {
+
+            int n = mat.size();
+        
+            int m = mat[0].size();
+        
+        
+            vector<vector<int> > dp(n , vector<int>(m,-1));
+
+            return func(n-1 , m-1 , mat , dp);
+            
+
+    }
+
+
+
+
+
+
+
+
+
+
+/// Tabulation  .......   TimeComp : O(n*m)  n=rows m=cols   , Space : O(n*m)
+
+
+
+
+
+if(n==1 && m==1 && mat[0][0] == -1){
+            return 0;
+        }
+        
+        
+        vector<vector<int>>dp(n,vector<int>(m,-1));  // m*n with -1
+
+		dp[0][0] = 1;
+
+		for(int i=0;i<n;i++){
+			
+				for(int j=0;j<m;j++){
+
+                                               if(mat[i][j] == -1){
+                                                       dp[i][j] = 0;
+                                                }
+                
+                
+					else if(i==0 && j==0){
+						continue;
+					}
+                
+                   
+
+					else{
+
+						int up=0;
+						int left=0;
+
+
+						if(i>0){
+							up = dp[i-1][j];
+						}
+
+						if(j>0){
+							left = dp[i][j-1];
+						}
+
+
+							dp[i][j] = up+left;
+					}
+
+
+			       }
+		   }
+
+
+	return dp[n-1][m-1];
+
+
