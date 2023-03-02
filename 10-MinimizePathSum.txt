@@ -1,0 +1,90 @@
+
+// Memoization 
+
+
+
+int func(int i , int j , vector<vector<int> > &arr, vector<vector<int> > &dp ){
+
+            if(i==0 && j==0){
+                return arr[i][j];
+            }
+
+            if(i<0 || j<0){
+                return 1000;
+            }
+
+         
+            if(dp[i][j] !=-1){
+                return dp[i][j];
+            }
+         
+         
+            
+            int up = arr[i][j] + func(i-1 , j , arr , dp);
+            int left = arr[i][j] + func(i,j-1 , arr , dp);
+
+            return dp[i][j] = min(up ,  left);
+
+    }
+
+
+
+    int minPathSum(vector<vector<int>>& arr) {
+        
+            int row = arr.size();
+            int col = arr[0].size();
+
+        
+             vector<vector<int>>dp(row,vector<int>(col,-1));
+                     return func(row-1,col-1 , arr  , dp);
+        
+
+
+	}
+
+
+
+
+
+
+
+
+
+// Tabulation 
+ 
+
+        vector<vector<int>>dp(row,vector<int>(col,0));
+        
+        dp[0][0] = arr[0][0];
+        
+        
+        
+        for(int i=0;i<row;i++){
+            
+            
+            for(int j=0;j<col;j++){
+            
+                
+                if(i==0 && j==0){
+                    continue;
+                }
+                
+                else{
+                    int up=INT_MAX;
+                    int left=INT_MAX;
+                    
+                    if(i>0){ up =  arr[i][j] + dp[i-1][j]; }
+                  
+                    if(j>0){ left = arr[i][j] + dp[i][j-1];}
+                    
+                    dp[i][j] = min(up,left);
+                    
+                } // else 
+                
+            }  // for j loop
+            
+        } // for i loop
+        
+        
+        
+        return dp[row-1][col-1];
