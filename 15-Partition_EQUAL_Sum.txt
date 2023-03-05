@@ -1,0 +1,67 @@
+bool func( int index , int target , vector<int> &arr , vector<vector<int>> &dp){
+
+    if(target == 0){
+        return true;
+    }
+
+    if(index==0){
+        return arr[0] == target;
+    }
+
+
+    if(dp[index][target] !=-1){
+        return dp[index][target];
+    }
+
+
+
+    bool nottake = func(index-1 , target , arr , dp);
+
+    bool take = false;
+
+    if(arr[index] <= target){
+        take = func(index-1 , target-arr[index] , arr , dp);
+    }
+
+    return dp[index][target] = take || nottake;
+
+}
+
+
+bool subsetSumToK(int n, int k, vector<int> &arr) {
+	
+    vector<vector<int> >  dp(n+1 , vector<int> (k+1,-1));
+
+
+    return func(n-1 , k , arr , dp);
+
+}
+
+
+
+
+
+//   Main code   ---- start from heree ....... 
+
+bool canPartition(vector<int> &arr, int n)
+{
+	int sum = 0;
+
+	for(auto i : arr){
+		sum += i;
+	}
+
+	if(sum % 2 != 0){  // odd   return false
+ 		return false;
+	}
+
+
+
+	int s1 = sum/2;
+
+	return subsetSumToK(n,s1 , arr);
+	
+
+
+
+}
