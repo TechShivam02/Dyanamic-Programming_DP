@@ -1,0 +1,51 @@
+
+
+int func(int index , int target , vector<int> &arr , vector<vector<int> > &dp){
+        
+       
+        if(target ==0 ){
+            return 1;
+        }
+        
+          if(index == 0){
+            return arr[0] == target;   // return 1 or 0 ;
+        }
+       
+
+
+
+        
+        if(dp[index][target] != -1){
+            return dp[index][target];
+        }
+        
+        
+        
+        int notpick = func(index-1 , target , arr , dp);
+        
+        int pick = 0;
+        
+        if(arr[index] <= target){
+            pick = func(index-1 , target-arr[index] , arr , dp);
+        }
+        
+        return dp[index][target] = notpick + pick;
+        
+        
+        
+    }
+
+
+
+int findWays(vector<int> &arr, int sum)
+{
+      
+        
+        int n = arr.size();
+        
+        
+        vector<vector<int>> dp (n , vector<int>(sum+1,-1));
+        
+        return func(n-1 , sum  , arr , dp);
+        
+}
