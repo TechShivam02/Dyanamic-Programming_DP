@@ -1,0 +1,106 @@
+#include <bits/stdc++.h> 
+
+
+int func(int index , int tar , vector<int> &coins ,  vector<vector<int>> &dp){
+
+
+
+    if(index ==0 ){
+
+        if(tar % coins[index] == 0){
+            return (tar/coins[index]);
+        }
+
+        return 1e9;
+    }
+
+    if(dp[index][tar] != -1){
+        return dp[index][tar];
+    }
+
+
+
+
+    int nottake = 0 + func(index-1 , tar , coins , dp);
+
+    int take = INT_MAX;
+
+    if(coins[index] <= tar){
+        take = 1 + func(index , tar-coins[index] , coins , dp); // will remain on same index , and target will be reduced 
+    }
+
+
+    return dp[index][tar] = min(nottake , take);
+
+}
+
+
+int minimumElements(vector<int> &coins, int target)
+{
+    // Write your code here.
+
+    int n = coins.size();
+
+    // vector<vector<int>> dp(n , vector<int>(target+1 , -1));
+
+    // int ans = func(n-1 ,target , coins , dp);
+
+
+    // if(ans < 1e9){
+    //     return ans;
+    // }
+
+    // return -1;
+
+
+
+
+
+    
+    vector<vector<int>> dp(n , vector<int>(target+1 , -1));
+
+
+    for(int t=0;t<=target;t++){
+        if(t % coins[0] == 0){
+            dp[0][t] = t/coins[0];
+        }
+
+        else { dp[0][t] = 1e9;}
+    }
+
+
+
+
+    for(int index=1; index<n ; index++){
+
+        for(int t=0;t<=target ; t++){
+
+
+            int nottake = 0 + dp[index-1][t];
+
+            int take = 1e9;
+
+                if(coins[index] <= t){
+
+                    
+                    take = 1 + dp[index][t - coins[index]]; 
+                }
+
+
+            dp[index][t] = min(nottake , take);
+
+        }
+    }
+
+
+    int ans = dp[n-1][target];
+
+    
+
+    if(ans < 1e9){
+        return ans;
+    }
+
+    return -1;
+
+}

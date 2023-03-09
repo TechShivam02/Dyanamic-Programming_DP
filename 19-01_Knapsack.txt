@@ -1,0 +1,77 @@
+#include <bits/stdc++.h> 
+
+
+
+int func(int index , int bagcap , vector<int> &wtarr, vector<int> &value , vector<vector<int> > &dp){
+
+	if(index ==0 ){
+          if (wtarr[0] <= bagcap) {
+            return value[0];
+          }
+
+		  return 0;
+        }
+
+
+	if(dp[index][bagcap] != -1){
+		return dp[index][bagcap];
+	}
+
+		int nottake = 0 + func(index-1 , bagcap , wtarr , value , dp);
+
+		int take = INT_MIN;
+
+		if(wtarr[index] <= bagcap){
+
+			take = value[index] + func(index-1 , bagcap - wtarr[index] , wtarr , value , dp);
+		}
+
+		return dp[index][bagcap] = max(nottake , take);
+
+}
+
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) 
+{
+	
+	// vector<vector<int>> dp(n , vector<int>(maxWeight+1 , -1));
+
+	// return func(n-1 , maxWeight , weight , value , dp);
+
+
+	
+	vector<vector<int>> dp(n , vector<int>(maxWeight+1 , 0));
+
+for(int w=weight[0] ; w<=maxWeight ;w++){
+	dp[0][w] = value[0];
+}
+	
+
+	for(int ind=1;ind<n;ind++){
+
+		for(int W=0 ; W<=maxWeight ; W++){
+
+
+					int nottake = 0 + dp[ind-1][W];
+
+					int take = INT_MIN;
+
+					if(weight[ind] <= W){
+
+						take = value[ind] + dp[ind-1][W- weight[ind]];
+					}
+
+				dp[ind][W] = max(nottake , take);
+		}
+	}
+
+
+
+	return dp[n-1][maxWeight];
+
+
+			
+	
+
+	
+}
