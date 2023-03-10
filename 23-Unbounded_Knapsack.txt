@@ -1,0 +1,80 @@
+#include <bits/stdc++.h> 
+
+
+
+int func(int index , int wtcap , vector<int> &w , vector<int> &value , vector<vector<int> > &dp){
+
+    if(index ==0 )
+    {
+        return (wtcap / w[0]) * value[0];
+    }
+
+    if(dp[index][wtcap] != -1){
+        return dp[index][wtcap];
+    }
+
+
+
+
+    int nottake = func(index -1 , wtcap , w , value , dp);
+
+    int take = INT_MIN;
+
+    if(w[index] <= wtcap){
+        take = value[index] + func(index , wtcap - w[index] , w , value , dp);
+    }
+
+    return dp[index][wtcap] = max(nottake , take);
+}
+
+
+int unboundedKnapsack(int n, int w, vector<int> &value, vector<int> &weight)
+{
+    
+
+    // vector<vector<int>> dp(n , vector<int> (w+1 , -1));
+
+    // return func(n-1 , w , weight , value , dp);
+    
+
+
+    
+
+    int wtcap = w;
+
+
+     vector<vector<int>> dp(n , vector<int> (w+1 , -1));
+
+    // base case
+
+    for(int w=0;w<=wtcap;w++){
+        dp[0][w] = (w/weight[0]) * value[0];
+    }
+
+
+
+
+    for(int index=1;index<=n-1;index++){
+
+        for(int w=0;w<=wtcap;w++){
+
+
+
+             int nottake = dp[index -1][w];
+
+             int take = INT_MIN;
+
+                if(weight[index] <= w){
+                    take = value[index] + dp[index][w - weight[index] ];
+                }
+
+            dp[index][w] = max(nottake , take);
+
+
+        }
+    }
+
+
+    return dp[n-1][wtcap];
+
+}
