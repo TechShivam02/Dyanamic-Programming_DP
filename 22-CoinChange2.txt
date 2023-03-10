@@ -1,0 +1,72 @@
+#include<vector>
+
+
+long func(int index , int target , int *arr , vector<vector< long>> &dp){
+
+    if(index == 0){
+
+        return (target % arr[0] ==0 );   // if can be formed return 1 else 0
+
+    }
+
+    if(dp[index][target] != -1){
+        return dp[index][target];
+    }
+
+
+
+    long nottake = func(index-1 , target , arr , dp);
+
+    long take = 0;
+
+    if(arr[index] <= target){
+        take = func(index , target - arr[index] , arr , dp);
+    }
+
+    return dp[index][target] = nottake + take;
+
+}
+
+
+long countWaysToMakeChange(int *denominations, int n, int value)
+{
+    
+
+    // vector<vector<long> > dp(n , vector<long> (value+1 , -1));   // int dp[n][target+1]
+
+    // return func(n-1 , value , denominations , dp);
+    
+
+
+
+    int target = value;
+
+     vector<vector<long> > dp(n , vector<long> (target+1 , -1));   // int dp[n][target+1]
+
+    for(int t=0;t<=target;t++){
+        dp[0][t] = (t % denominations[0] ==0 );
+    }
+
+
+    for(int id=1; id<=n-1;id++){
+
+        for(int t=0;t<=target;t++){
+        
+            long nottake = dp[id-1][t];
+
+            long take = 0;
+
+            if(denominations[id] <= t){
+                take = dp[id][t-denominations[id]];
+            }
+
+            dp[id][t] = nottake + take;
+
+        }
+    }
+
+    return dp[n-1][target];
+
+
+
+}
