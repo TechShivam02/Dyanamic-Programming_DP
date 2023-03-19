@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+
+
+int static dp[1000][1001];   // Intializing dp[1000][1001];
+
+
+
+
+void PrintLongestCommonSubSeq(string s1 , string s2 , int n , int m ){
+    
+    
+    
+    // forming tabulation ... 
+    
+        for(int i=0;i<n+1;i++){         // 0 , 1 2 3 4 ..... n 
+            for(int j=0;j<m+1;j++){   // 0 , 1 2 3 4 ..... m
+                
+                  if(i==0 || j==0){     // Base Case = intialization
+                      
+                      dp[i][j]=0;
+                  }              
+                  
+                  else if( s1[i-1] == s2[j-1] ){
+                      dp[i][j]=1+dp[i-1][j-1];             // 1+lcs(s1,s2,n-1,m-1)
+                  }
+                
+                
+                else{
+                    dp[i][j] = max ( dp[i-1][j] , dp[i][j-1] );         // max ( lcs(s1,s2,n-1,m) ,lcs(s1,s2,n,m-1) };
+                    
+                }
+                
+            
+            }
+        }
+        
+        
+        
+            
+      
+      int i=n,j=m;
+      
+      
+      
+      
+      string ans="";
+      
+      
+      while(i>0 && j>0){
+      
+        if(s1[i-1] == s2[j-1]){   // same 
+              
+            ans.push_back(s1[i-1]);
+            i--;
+            j--;
+            
+            
+        }
+        
+        else{
+            if(dp[i][j-1] > dp[i-1][j]){    // Move Left
+                j--;
+            }
+            
+            else{      // Move UP 
+                i--;
+            }
+        }
+            
+          
+      }
+      
+      cout<<ans<<" "<<endl;
+      
+      
+      
+      reverse(ans.begin() , ans.end());
+      
+      cout<<"Final Ans : "<<ans<<" ";
+      
+        
+     
+    
+}
+
+
+int main()
+{
+    
+    memset(dp , 0 , sizeof(dp));               // insider function , 1st - array , 2nd - to whom value with intialized  (Only 0 Or -1 ) , sizeof(array) )    
+    
+    // It will intialized the dp array (2d array ) , with 0
+    
+    
+  
+  
+  string s1="acbcf";
+                        //   x,y,n-1,m
+  string s2="abcdaf";
+      
+      
+   int n=s1.length();
+   int m=s2.length();
+   
+   
+   PrintLongestCommonSubSeq(s1,s2 , n , m);        // No need of passing dp // bcz intialized global , and value's are changing globaly 
+   
+    return 0;
+}
+
+
+
