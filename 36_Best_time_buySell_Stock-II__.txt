@@ -1,0 +1,99 @@
+class Solution {
+public:
+    
+    
+    int func(int index ,int buy , vector<int> arr , vector<vector<long long>> &dp){
+        
+        if(index == arr.size()){
+            return 0;
+        }
+        
+        
+        if(dp[index][buy] !=-1){
+            return dp[index][buy];
+            
+        }
+        
+        
+        long long profit=0;
+        
+        
+        if(buy == 1){  // u can buy
+            
+            profit =    max(  -arr[index] + func(index+1 , 0 , arr , dp) ,  func(index+1 , 1 , arr,dp) );
+        }
+        
+        else{
+            
+            profit =    max( arr[index] + func(index+1 , 1 , arr , dp)  ,  func(index+1 , 0 , arr,dp) );
+            
+        }
+                              
+        return dp[index][buy] = profit;
+                              
+    }
+                              
+    
+    int maxProfit(vector<int>& arr) {
+        
+        int n=  arr.size();
+        
+        
+//         vector<vector<long long> > dp( n , vector<long long>(2,-1));
+        
+//         return func(0 , 1 , arr , dp);
+        
+        
+        
+        
+        /*
+        vector<vector<long long> > dp( n+1 , vector<long long>(2,-1));
+        
+        
+        dp[n][0]=0;
+        dp[n][1]=0;
+        
+        
+        for(int index=n-1;index>=0;index--){
+            
+            for(int buy=1;buy>=0;buy--){
+                
+                
+                long profit=0;
+                
+                if(buy == 1){  // u can buy
+                         profit =    max(  -arr[index] + dp[index+1][0] ,  dp[index+1][1] );
+                    }
+        
+                
+                  else{
+                        profit =    max( arr[index] + dp[index+1][1] , dp[index+1][0] );
+                }
+                
+                dp[index][buy] = profit;
+            }
+        }
+        
+        
+        return dp[0][1];    // return the pass parameter intially recursion 
+        
+        */
+        
+        
+        
+        
+        
+        
+  long long  prof=0;
+        
+    for(int i=1;i<n;i++){
+        if(arr[i-1]<arr[i]){
+            prof+=arr[i]-arr[i-1];
+        }
+    }
+    return prof;
+        
+        
+        
+    }
+};
