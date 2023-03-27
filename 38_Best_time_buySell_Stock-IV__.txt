@@ -1,0 +1,113 @@
+class Solution {
+public:
+    
+    
+    int func(int index , int buy , int cap , vector<int> &price , vector<vector<vector<int> > > &dp)
+    {
+        
+        if(cap ==0 ){
+            return 0;
+        }
+        
+        if(index == price.size()){
+            return 0;
+        }
+        
+        
+        if(dp[index][buy][cap] != -1){
+            return dp[index][buy][cap];
+        }
+        
+        
+        if(buy == 1){
+            
+            return dp[index][buy][cap] = max(   ( -1*price[index] + func(index+1,0,cap,price , dp) )  , ( 0 + func(index+1,1,cap,price,dp) )  );
+        } 
+        
+        else{
+            
+            return dp[index][buy][cap] = max(   ( price[index] + func(index+1,1,cap-1,price,dp) )  , ( 0 + func(index+1,0,cap,price,dp) )  );
+        }
+        
+    
+        
+    }
+    
+    
+    
+    int maxProfit(int k, vector<int>& price) {
+        
+          int n = price.size();
+        
+//         vector<vector<vector<int> >> dp(n , vector<vector<int>> (2 ,  vector<int>(k+1 , -1)));
+    
+//         return func(0,1,k , price , dp);
+        
+        
+        
+        
+        
+         vector<vector<vector<int> >> dp(n+1 , vector<vector<int>> (2 ,  vector<int>(k+1,0)));
+        
+       
+         
+        for(int ind=0; ind <= n-1 ; ind++){
+            for(int buy=0;buy<=1;buy++){
+                
+                dp[ind][buy][0]=0;
+            }
+        }
+        
+        
+        
+        
+          for(int buy=0; buy <= 1 ; buy++){
+            for(int cap=0;cap<=k;cap++){
+                
+                dp[n][buy][cap]=0;
+            }
+        }
+        
+        
+        
+        
+        for(int index=n ; index>=0; index--){
+            
+            for(int buy=0;buy<=1;buy++){
+                
+                
+                for(int cap=0;cap<=k;cap++){
+                    
+                    
+                    if(index == n || cap ==0 ){
+                        continue;
+                    }
+                    
+                    
+                    
+                     if(buy == 1){
+            
+                                dp[index][buy][cap] = max(  -price[index] + dp[index+1][0][cap]  ,  dp[index+1][1][cap]   );
+                        } 
+        
+                 
+                    else{
+                     
+                        dp[index][buy][cap] = max(  price[index] + dp[index+1][1][cap-1]   ,  dp[index+1][0][cap]  );
+                }
+        
+                    
+                    
+                    
+                    
+                }
+            }
+        }
+        
+        
+        return dp[0][1][k];
+        
+        
+        
+    }
+};
