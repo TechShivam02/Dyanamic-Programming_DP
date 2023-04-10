@@ -1,0 +1,79 @@
+  
+        int n = arr.size();
+        
+        
+        vector<int> dp(n,1);
+        vector<int> hash(n);
+        
+        
+        int finalans = 0;
+        
+        int lastindex=-1;
+        
+        
+        int maxi=1;
+        
+        for(int index=0;index<n;index++){
+            
+            
+            hash[index]=index;
+            
+            
+            for(int prev=0;prev<index;prev++){
+                
+                
+                if(arr[prev] < arr[index]){
+                    
+                    int ans = dp[prev] + dp[index];
+                    
+                    
+                    if(ans > maxi){
+                         hash[index] = prev;
+                    }
+                    
+                    
+                    maxi = max(maxi , ans);
+                    
+                   
+                }
+                
+                
+            }
+            
+            dp[index] = maxi;
+              
+            if(maxi > finalans){
+                finalans = maxi;
+                lastindex=index;
+            }
+            
+            
+            maxi =1;
+            
+            
+        }
+        
+       
+        
+        
+            vector<int> ans;
+        
+        
+        
+        while(hash[lastindex] != lastindex){
+            ans.push_back(arr[lastindex]);
+            lastindex = hash[lastindex];
+        }
+            
+        ans.push_back(arr[lastindex]);
+
+       
+        
+        
+        reverse(ans.begin() , ans.end());
+        
+        
+        for(auto i : ans){
+            cout<<i<< " --> ";
+        }
+        
