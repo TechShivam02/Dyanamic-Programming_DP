@@ -1,0 +1,97 @@
+class Solution {
+public:
+    
+    
+    vector<int> largestDivisibleSubset(vector<int>& arr) {
+        
+        
+        // 1step 
+        sort(arr.begin() , arr.end());
+        
+        
+        
+        
+        
+        int n = arr.size();
+        
+        
+        vector<int> ans;
+        
+        vector<int> dp(n , 1);
+        
+        
+        vector<int> hash(n);   // to print the ans; 
+        
+        
+        int finalans = 0;
+        
+        int lastindex=-1;  // to find the string ans 
+        
+        int maxi=1;  // bcz min ans =1 , for app dp[i]
+        
+        
+        
+        for(int index=0;index<n;index++){
+            
+            
+            hash[index]=index;
+            
+            
+            for(int prev=0;prev<index;prev++)
+            {
+                
+                 if( arr[index] % arr[prev] ==0 ){
+                     
+                    int ans = dp[prev] + dp[index];
+                    
+                    
+                    if(ans > maxi){
+                         hash[index] = prev;
+                    }
+                    
+                    
+                    maxi = max(maxi , ans);
+                    
+                   
+                }
+                
+                
+            }
+            
+            
+             dp[index] = maxi;
+              
+            if(maxi > finalans){
+                finalans = maxi;
+                lastindex=index;    // update finalindex to get maxi ans ... 
+            }
+            
+            
+            maxi =1;
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        while(hash[lastindex] != lastindex){
+            ans.push_back(arr[lastindex]);
+            lastindex = hash[lastindex];
+        }
+            
+        ans.push_back(arr[lastindex]);
+        
+        reverse(ans.begin() , ans.end());
+        
+        
+        
+        return ans;
+        
+        
+        
+    }
+};

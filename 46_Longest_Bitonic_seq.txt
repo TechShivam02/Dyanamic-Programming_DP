@@ -1,0 +1,144 @@
+/*  CodeStudio ... 
+
+
+
+vector<int> solve(vector<int> arr){
+        
+        
+        int n = arr.size();
+            
+        vector<int> dp(n,1);
+        
+        
+        
+        for(int i=0;i<n;i++){
+            
+            for(int j=0;j<i;j++){
+                
+                if(arr[j] < arr[i] && 1+dp[j] > dp[i]){
+                    dp[i] = 1+dp[j];
+                }
+            }
+        }
+        
+        
+        return dp;
+        
+    }
+
+
+
+int longestBitonicSequence(vector<int>& nums, int n) {
+	  // Write your code here.
+
+
+	  
+	  
+        vector<int> left = solve(nums);
+        
+       reverse(nums.begin() , nums.end());
+           
+                vector<int> right = solve(nums);
+                reverse(right.begin(),right.end());
+        
+       reverse(nums.begin() , nums.end());
+            
+            
+        
+        int maxi=0;
+        
+        for(int i=0;i<n;i++){
+            
+            
+            maxi = max(maxi , left[i]+right[i]-1);
+        }
+        
+        return maxi;
+
+
+} 
+
+
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+// Leetcode  
+
+ vector<int> solve(vector<int> arr){
+        
+        
+        int n = arr.size();
+            
+        vector<int> dp(n,1);
+        
+        
+        
+        for(int i=0;i<n;i++){
+            
+            for(int j=0;j<i;j++){
+                
+                if(arr[j] < arr[i] && 1+dp[j] > dp[i]){
+                    dp[i] = 1+dp[j];
+                }
+            }
+        }
+        
+        
+        return dp;
+        
+    }
+    
+    
+    
+    int minimumMountainRemovals(vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        vector<int> left = solve(nums);
+        
+       reverse(nums.begin() , nums.end());
+           
+                vector<int> right = solve(nums);
+                reverse(right.begin(),right.end());
+        
+       reverse(nums.begin() , nums.end());
+            
+            
+        
+        int maxi=-1;
+        
+        for(int i=0;i<n;i++){
+            
+            if(left[i]==1 || right[i]==1) continue; 
+            
+            maxi = max(maxi , left[i]+right[i]-1);
+        }
+        
+        return n-maxi;
+        
+        
+        
+        
+    }
+
+
+*/
