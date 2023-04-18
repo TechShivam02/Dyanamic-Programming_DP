@@ -1,0 +1,98 @@
+#include <bits/stdc++.h> 
+
+
+int solve(int i , int j , vector<int> &vec){
+
+    if(i >j ){
+        return 0;
+    }
+
+    int mini = INT_MAX;
+
+
+    for(int k=i;k<=j;k++){   // start from i to j 
+
+        int cost = vec[j+1] - vec[i-1] + solve(i,k-1,vec) + solve(k+1,j, vec);
+
+        mini = min(mini,cost);
+    }
+
+    return mini;
+
+}
+
+
+int cost(int n, int c, vector<int> &vec){
+
+
+    
+    vec.push_back(n);
+    vec.insert(vec.begin(),0);
+
+
+    sort(vec.begin(),vec.end());
+    return solve(1,c,vec);   // i=1  , j=c 
+}
+
+
+
+
+
+
+
+
+// Memoization 
+
+
+
+
+
+#include <bits/stdc++.h> 
+
+int solve(int i , int j , vector<int> &vec , vector<vector<int>> &dp){
+
+    if(i >j ){
+        return 0;
+    }
+
+
+    if(dp[i][j] != -1)
+    {
+        return dp[i][j];
+    }
+
+
+    int mini = INT_MAX;
+
+
+    for(int k=i;k<=j;k++){   // start from i to j 
+
+        int cost = vec[j+1] - vec[i-1] + solve(i,k-1,vec , dp) + solve(k+1,j, vec , dp);
+
+        mini = min(mini,cost);
+    }
+
+    return dp[i][j] =mini;
+
+}
+
+
+int cost(int n, int c, vector<int> &vec){
+
+
+    vector<vector<int>> dp(n , vector<int>(n,-1));
+
+
+
+    vec.push_back(n);
+    vec.insert(vec.begin(),0);
+
+
+    sort(vec.begin(),vec.end());
+    return solve(1,c,vec , dp);   // i=1  , j=c 
+
+
+}
+
+
+
