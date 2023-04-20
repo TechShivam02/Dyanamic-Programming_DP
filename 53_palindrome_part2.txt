@@ -1,0 +1,114 @@
+  
+    bool isPalindrome(string str){
+        
+        
+        int n = str.length();
+        
+        int i=0;
+        int j=n-1;
+       
+        while(i < j ){
+            if(str[i] != str[j]){
+                return false;
+            }
+            
+            else{
+                i++;
+                j--;
+            }
+        }
+        return true;
+        
+    }
+    
+    
+    int solve(int i , string str , vector<int> &dp){
+        
+        if( i == str.length()){
+            return 0;
+        }
+        
+        if(dp[i] != -1){
+            return dp[i];
+        }
+        
+        
+        string temp = "";
+        
+        int mini = INT_MAX;
+        
+        
+        for(int j=i;j<str.length();j++){
+             
+            temp += str[j];
+            
+            if(isPalindrome(temp)){
+                int cost = 1 + solve(j+1 , str ,dp);
+                
+                mini = min(mini , cost);
+            }
+        }
+        
+        return dp[i] = mini;
+        
+        
+    }
+    
+    
+    
+    int minCut(string str) {
+        
+        if(str.length() ==0 ){
+            return 0;
+        }
+        
+        
+        int n = str.length();
+        
+        // vector<int> dp(n+1,-1);
+        // return solve(0 , str , dp)-1;
+        
+        
+        
+        
+        
+    /// tabulation ..... 
+        
+        
+        
+         vector<int> dp(n+1,-1);
+        
+         dp[n]=0;
+       
+        
+        for(int i=n-1;i>=0;i--){
+            
+          
+            string temp = "";
+            int mini = INT_MAX;
+        
+        
+                for(int j=i;j<str.length();j++){
+
+                    temp += str[j];
+
+                    if(isPalindrome(temp)){
+                        int cost = 1 + dp[j+1];
+
+                        mini = min(mini , cost);
+                    }
+                }
+            
+            dp[i] = mini;
+            
+            
+        }
+        
+        
+        
+        
+        return dp[0]-1;  // the passing from recur
+        
+        
+        
+    }

@@ -1,0 +1,119 @@
+#include <bits/stdc++.h> 
+
+int mod = 1e9+7;
+
+
+
+ long long solve(int i , int j  , int istrue , string &str , vector<vector<vector<long long>>> &dp){
+        
+        if(i > j ){
+            return 0;
+            
+        }
+        
+        if(i == j){
+            
+            if(istrue){
+                return str[i] == 'T';
+            }
+            
+            else{
+                 return str[i] == 'F';
+            }
+        }
+        
+        
+        if(dp[i][j][istrue] !=-1){
+            return dp[i][j][istrue];
+        }
+        
+        
+        
+        long long ways = 0;
+        
+        for(int k=i+1;k<=j-1;k+=2){
+            
+            long long leftrue =   solve(i,k-1,1 , str , dp);
+            long long leftfalse = solve(i,k-1,0 , str , dp);
+            
+            long long rightrue =  solve(k+1,j,1 , str , dp);
+            long long rightfalse = solve(k+1,j,0 , str , dp);
+            
+            
+            if(str[k] =='&'){
+                
+                // true : t&t 
+                
+                if(istrue){
+                    ways = (ways + (leftrue*rightrue) % mod ) %mod;
+                }   
+                
+                // false :  t&f   f&t   f&f 
+                
+                else{
+                    ways = ( ways + (leftfalse*rightfalse) % mod  + (leftrue * rightfalse) % mod  +  (leftfalse * rightrue) % mod ) %mod;
+                }
+            }
+               
+            else if(str[k] =='|'){
+                
+                //true :  t|t   t|f  f|t 
+                
+                if(istrue){
+                    ways = (ways + (leftrue*rightrue) % mod  + (leftrue * rightfalse) % mod  + (leftfalse * rightrue) % mod  ) %mod;
+                }   
+                
+                
+                // false : f|f
+                
+                else{
+                    ways = ( ways + (leftfalse * rightfalse) % mod) % mod;
+                }
+                
+            }
+            
+            else{
+                
+                // t^t = f   f^f = f   t^f= t   f^t = t
+                
+                
+                
+                // t^f= t   f^t = t
+                  if(istrue){
+                    ways = (ways + (leftrue*rightfalse) % mod  + (leftfalse * rightrue) % mod  ) %mod;
+                }   
+                
+                
+                // t^t = f   f^f = f
+                else
+                {
+                   ways = (ways + (leftrue*rightrue) % mod  + (leftfalse * rightfalse) % mod  ) %mod;
+                }
+                
+            }
+            
+           
+        }  // for looop
+        
+        
+        return dp[i][j][istrue] = ways % mod;
+        
+        
+        
+    }
+
+
+
+int evaluateExp(string & str) {
+    // Write your code here.
+
+      
+        int n = str.length();
+        
+        vector<vector<vector<long long >>>dp(n , vector<vector<long long>>(n, vector<long long>(2,-1)));
+
+        return solve(0,n-1 , 1 , str , dp);
+        
+
+
+}
